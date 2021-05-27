@@ -25,7 +25,6 @@ db.people.find({state: "Montana"}, {age: false});
 // List the email addresses of people with a ".edu" email. Only display the email. (12)
 db.people.find({email: /.edu$/}, {_id: false, first_name: false, last_name: false, gender: false, age: false, state: false, children: false});
 // OPTIONAL ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 // Count all people with at least one child under age four. (69)
 
 // List people who have no children. (43)
