@@ -38,20 +38,28 @@ db.people.aggregate([
 ]);
 // Name and age of children in Michigan who are under age ten Expected Result: Adam 0, Janice 1, Judith 3, Beverly 4, Antonio 6, Jeremy 7
 db.people.aggregate([
-    {$match: {state: "Michigan"}},
-    {$unwind: "$children"},
-    {$project: {
-        name:true,
-        age: true
-    }}
-])
+  { $match: { state: "Michigan" } },
+  { $unwind: "$children" },
+  {
+    $project: {
+      name: true,
+      age: true,
+    },
+  },
+]);
 // Average age of child by state, sorted with oldest first Expected Result: Rhode Island 20, Idaho 20, Louisiana 15.7, Kentucky 13.1, Indiana 12.6, ...
 
 // ORDERS --------------------------------------------------------------------------------------------------------------------------------------------
 // Find the total dollar amount of all sales ever. Use the total field. Expected Result: 680.92
-db.orders.aggregate([{ $group: { _id: null, totalSales: { $sum: "$total" } } }]);
+db.orders.aggregate([
+  { $group: { _id: null, totalSales: { $sum: "$total" } } },
+]);
 // Find the total dollar amount of sales on 2017-05-22. Use the total field. Expected Result: 271.2
-db.orders.aggregate([{$match: {date: "2017-05-22"}}, { $group: {$sum: "$total" }}]);
+db.orders.aggregate([
+  { $match: { date: "2017-05-22" } },
+  { $group: { _id: "$total", totalSales: { $sum: "$total" } } },
+  {$project: {_id: false, total: {$sum: "$totalSales"}}}
+]);
 // Find the date with the greatest number of orders. Include the date and the number of orders. Expected Result: 2017-05-04 3
 
 // Find the date with the greatest total sales. Include the date and the dollar amount for that day. Expected Result: 2017-05-22 $271.2
